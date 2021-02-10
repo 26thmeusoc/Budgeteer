@@ -5,7 +5,7 @@
     text-align:center;
     vertical-align:middle;
     height:30px;
-    width:30%;
+    width:10%;
     float:left;
     margin:10px;
 }
@@ -20,4 +20,23 @@
 
 .button-red {
     background-color:red;
+}
+
+.button-yellow {
+    background-color:yellow;
+}
+
+.button-blue {
+    background-color:blue;
+}
+
+/*
+ * After the tag using this has closed, revert everything.
+ * This allows to create a new line.
+ * See: https://www.w3schools.com/Css/css_float_examples.asp
+ */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }

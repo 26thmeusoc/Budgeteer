@@ -24,7 +24,13 @@
     <title>Budgeteer</title>
 </head>
 <body>
+    <div class="clearfix">
     <div class="button button-green button-text">New Receipt</div>
     <div class="button button-red button-text">Delete Receipt</div>
+    </div>
+    <select name="month">
+        <option value="jan-21">Jan 21</option>
+        <option value="feb-21">Feb 21</option>
+    </select>
 </body>
 </html>
