@@ -11,3 +11,20 @@
     this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- What's in this file? -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <!-- Resposive Webdesign Info ahead! -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load the stylesheet for this document! -->
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <title>Budgeteer</title>
+</head>
+<body>
+    <div class="button button-green button-text">New Receipt</div>
+    <div class="button button-red button-text">Delete Receipt</div>
+</body>
+</html>

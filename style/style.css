@@ -1,0 +1,23 @@
+/*
+ */
+.button {
+    color:white;
+    text-align:center;
+    vertical-align:middle;
+    height:30px;
+    width:30%;
+    float:left;
+    margin:10px;
+}
+
+.button-text {
+    color:white;
+}
+
+.button-green {
+    background-color:green;
+}
+
+.button-red {
+    background-color:red;
+}
