@@ -32,8 +32,7 @@
 
 /*
  * After the tag using this has closed, revert everything.
- * This allows to create a new line.
- * See: https://www.w3schools.com/Css/css_float_examples.asp
+ * This allows to create a new line after the buttons
  */
 .clearfix::after {
     content: "";

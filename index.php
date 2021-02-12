@@ -1,3 +1,8 @@
+<?php
+    include("data/access.php");
+    $db = openDB();
+    $result = createTables($db);
+?>
 <!--
     Copyright (C) 2022  Dirk Braun  This program is free 
     software; you can redistribute it and/or modify it under the terms 
@@ -25,8 +30,8 @@
 </head>
 <body>
     <div class="clearfix">
-    <div class="button button-green button-text">New Receipt</div>
-    <div class="button button-red button-text">Delete Receipt</div>
+        <div class="button button-green button-text">New Receipt</div>
+        <div class="button button-red button-text">Delete Receipt</div>
     </div>
     <select name="month">
         <option value="jan-21">Jan 21</option>
