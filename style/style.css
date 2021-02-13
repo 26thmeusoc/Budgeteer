@@ -39,3 +39,7 @@
     clear: both;
     display: table;
 }
+
+div.scrollable {
+    overflow-y:auto;
+}

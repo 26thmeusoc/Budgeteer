@@ -1,6 +1,6 @@
 <?php
     include("data/access.php");
-    $db = openDB();
+    $db = openDB('data/budgeteer.sqlite3');
     $result = createTables($db);
 ?>
 <!--
@@ -37,5 +37,22 @@
         <option value="jan-21">Jan 21</option>
         <option value="feb-21">Feb 21</option>
     </select>
+    <div id='saldo'>
+        <h3>Saldo</h3>
+        <table>
+            <thead>
+                <th>Wer?</th><th>Wie viel?</th>
+            </thead>
+            <?php
+            ?>
+        </table>
+    </div>
+    <div id='zahlungen'>
+        <table class='scrollable'>
+            <thead><th>Was?</th><th></th><th>Wer?</th><th>Wie viel?</th><th></th></thead>
+            <?php
+            ?>
+        </table>
+    </div>
 </body>
 </html>

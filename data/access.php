@@ -3,8 +3,8 @@
 /**
  * 
  */
-function openDB() {
-    $db = new SQLite3('data/budgeteer.sqlite3');
+function openDB($dbfile) {
+    $db = new SQLite3($dbfile);
     return $db;
 }
 
