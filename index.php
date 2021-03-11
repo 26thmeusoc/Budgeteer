@@ -1,16 +1,24 @@
 <?php
+    // Access the database
     include("data/access.php");
     $db = openDB('data/budgeteer.sqlite3');
+    // Just in case, the database is empty, create the needed tables.
     $result = createTables($db);
     
+    /***
+     * Get a list of all Users in this Database.
+     ***/
+    // Prepare the query.
     $query = "SELECT * FROM users";
     $result = $db->query($query);
     $users = array();
     if ($result != FALSE) {
+        // Get a list of all usernames and uids.
         while ($row = $result->fetchArray()) {
             $users[$row["id"]] = $row["username"];
         }
     } else {
+        // Something went wrong
         echo "Could not load Userlist";
     }
 ?>
@@ -41,7 +49,8 @@
 </head>
 <body>
     <div class="clearfix">
-        <div class="button button-green button-text">New Receipt</div>
+        <!-- Nothing happening with those buttons. -->
+        <div class="button button-green button-text">New Receipt</div> 
         <div class="button button-red button-text">Delete Receipt</div>
     </div>
     <div id='saldo'>
@@ -49,19 +58,24 @@
         <table>
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
+                <!-- Nothing happening here, tbd... -->
             </thead>
             <?php
             ?>
         </table>
     </div>
+    <!-- List of purchases -->
     <div id='zahlungen'>
         <table class='scrollable'>
             <thead><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></thead>
             <?php
+            // Prepare the list of all purchases
                 $query = "SELECT * FROM purchase";
                 $result = $db->query($query);
                 if (result != FALSE) {
+                    // For every purchase found
                     while ($row = $result -> fetchArray()) {
+                        // Write a row in this Database
                         echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td>".$row["sum"]." €</td></tr>";
                     }
                 }
