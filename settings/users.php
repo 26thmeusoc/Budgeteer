@@ -34,7 +34,8 @@
 ?>
 </table>
 </div>
-<div>
+<div class="button-add">
+    Add User [+]
 </div>
 </body>
 </html>

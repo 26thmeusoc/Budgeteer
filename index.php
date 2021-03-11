@@ -2,6 +2,17 @@
     include("data/access.php");
     $db = openDB('data/budgeteer.sqlite3');
     $result = createTables($db);
+    
+    $query = "SELECT * FROM users";
+    $result = $db->query($query);
+    $users = array();
+    if ($result != FALSE) {
+        while ($row = $result->fetchArray()) {
+            $users[$row["id"]] = $row["username"];
+        }
+    } else {
+        echo "Could not load Userlist";
+    }
 ?>
 <!--
     Copyright (C) 2022  Dirk Braun  This program is free 
@@ -33,10 +44,6 @@
         <div class="button button-green button-text">New Receipt</div>
         <div class="button button-red button-text">Delete Receipt</div>
     </div>
-    <select name="month">
-        <option value="jan-21">Jan 21</option>
-        <option value="feb-21">Feb 21</option>
-    </select>
     <div id='saldo'>
         <h3>Saldo</h3>
         <table>
@@ -49,8 +56,15 @@
     </div>
     <div id='zahlungen'>
         <table class='scrollable'>
-            <thead><th>Was?</th><th></th><th>Wer?</th><th>Wie viel?</th><th></th></thead>
+            <thead><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></thead>
             <?php
+                $query = "SELECT * FROM purchase";
+                $result = $db->query($query);
+                if (result != FALSE) {
+                    while ($row = $result -> fetchArray()) {
+                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td>".$row["sum"]." €</td></tr>";
+                    }
+                }
             ?>
         </table>
     </div>

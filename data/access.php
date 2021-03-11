@@ -23,7 +23,7 @@ function createTables($db) {
     
     
     // Create a List for current month
-    $call = 'CREATE TABLE IF NOT EXISTS purchase (id INTEGER PRIMARY KEY AUTOINCREMENT, uid INTEGER NOT NULL, sum UNSIGNED INTEGER, comment VARCHAR, buydate DATE, entrydate DATE, lastmod DATE, FOREIGN KEY (uid) REFERENCES users(id))';
+    $call = 'CREATE TABLE IF NOT EXISTS purchase (id INTEGER PRIMARY KEY AUTOINCREMENT, uid INTEGER NOT NULL, sum UNSIGNED INTEGER, title VARCHAR, comment VARCHAR, buydate DATE, entrydate DATE, lastmod DATE, FOREIGN KEY (uid) REFERENCES users(id))';
     $result = $db->query($call);
     if ($result == FALSE) { // No, give an error Message and leave the function
         echo "Error ".$db->lastErrorCode()."! Last Message was:<br/>".$db->lastErrorMsg()."<br/> Call was: ".$call;

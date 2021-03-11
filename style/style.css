@@ -14,8 +14,9 @@
     color:white;
 }
 
-.button-green {
+.button-add {
     background-color:green;
+    width:100%
 }
 
 .button-red {
