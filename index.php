@@ -11,11 +11,19 @@
     // Prepare the query.
     $query = "SELECT * FROM users";
     $result = $db->query($query);
+    // Create arrays
     $users = array();
+    $sums = array();
+    $uids = array();
     if ($result != FALSE) {
         // Get a list of all usernames and uids.
         while ($row = $result->fetchArray()) {
+            // Create an array, so we can easily map uid->username
             $users[$row["id"]] = $row["username"];
+            // Create an array of uids
+            array_push($uids,$row["id"]);
+            // Create an array of sums they pai in this focus.
+            $sums[$row["id"]] = 0;
         }
     } else {
         // Something went wrong
@@ -58,7 +66,22 @@
         <table>
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
-                <!-- Nothing happening here, tbd... -->
+                <?php
+                // Get all payments in this focus
+                $query = "SELECT * FROM purchase";
+                $purchases = $db->query($query);
+                if ($purchases != FALSE) {
+                    // Sum, what everyone has paids
+                    while ($row = $purchases->fetchArray()) {
+                        $sums[$row["uid"]] = $sums[$row["uid"]]+$row["sum"];
+                    }
+                }
+                
+                // Print the results, do it for every uid found
+                for ($i = 0;$i<count($uids);$i++) {
+                    echo "<tr><td>".$users[$uids[$i]]."</td><td>".$sums[$uids[$i]]."</td></tr>";
+                }
+                ?>
             </thead>
             <?php
             ?>
@@ -70,11 +93,10 @@
             <thead><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></thead>
             <?php
             // Prepare the list of all purchases
-                $query = "SELECT * FROM purchase";
-                $result = $db->query($query);
-                if (result != FALSE) {
+                if ($purchases != FALSE) {
+                    $purchases->reset();
                     // For every purchase found
-                    while ($row = $result -> fetchArray()) {
+                    while ($row = $purchases -> fetchArray()) {
                         // Write a row in this Database
                         echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td>".$row["sum"]." €</td></tr>";
                     }
