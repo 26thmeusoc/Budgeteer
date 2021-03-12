@@ -11,11 +11,19 @@
     // Prepare the query.
     $query = "SELECT * FROM users";
     $result = $db->query($query);
+    // Create arrays
     $users = array();
+    $sums = array();
+    $uids = array();
     if ($result != FALSE) {
         // Get a list of all usernames and uids.
         while ($row = $result->fetchArray()) {
+            // Create an array, so we can easily map uid->username
             $users[$row["id"]] = $row["username"];
+            // Create an array of uids
+            array_push($uids,$row["id"]);
+            // Create an array of sums they have paid in this focus.
+            $sums[$row["id"]] = 0;
         }
     } else {
         // Something went wrong
@@ -48,39 +56,53 @@
     <title>Budgeteer</title>
 </head>
 <body>
-    <div class="clearfix">
-        <!-- Nothing happening with those buttons. -->
-        <div class="button button-green button-text">New Receipt</div> 
-        <div class="button button-red button-text">Delete Receipt</div>
-    </div>
     <div id='saldo'>
         <h3>Saldo</h3>
         <table>
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
-                <!-- Nothing happening here, tbd... -->
+                <?php
+                // Get all payments in this focus
+                $query = "SELECT * FROM purchase";
+                $purchases = $db->query($query);
+                if ($purchases != FALSE) {
+                    // Sum, what everyone has paids
+                    while ($row = $purchases->fetchArray()) {
+                        $sums[$row["uid"]] = $sums[$row["uid"]]+$row["sum"];
+                    }
+                }
+                
+                // Print the results, do it for every uid found
+                for ($i = 0;$i<count($uids);$i++) {
+                    echo "<tr><td>".$users[$uids[$i]]."</td><td class='zahlung'>".$sums[$uids[$i]]." € </td></tr>";
+                }
+                ?>
             </thead>
             <?php
             ?>
         </table>
     </div>
     <!-- List of purchases -->
-    <div id='zahlungen'>
-        <table class='scrollable'>
-            <thead><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></thead>
+    <div id='zahlungen' class='scrollable'>
+        <table>
+            <thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead>
+            <tbody>
             <?php
             // Prepare the list of all purchases
-                $query = "SELECT * FROM purchase";
-                $result = $db->query($query);
-                if (result != FALSE) {
+                if ($purchases != FALSE) {
+                    $purchases->reset();
                     // For every purchase found
-                    while ($row = $result -> fetchArray()) {
+                    while ($row = $purchases -> fetchArray()) {
                         // Write a row in this Database
-                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td>".$row["sum"]." €</td></tr>";
+                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".$row["sum"]." €</td></tr>";
                     }
                 }
             ?>
+            </tbody>
         </table>
+    </div>
+    <div class="clearfix">
+        <div class="button button-add button-text">New Receipt</div> 
     </div>
 </body>
 </html>

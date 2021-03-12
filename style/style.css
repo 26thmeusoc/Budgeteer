@@ -4,10 +4,10 @@
     color:white;
     text-align:center;
     vertical-align:middle;
-    height:30px;
-    width:10%;
+    height:50px;
+    width:100%;
     float:left;
-    margin:10px;
+    /*margin:10px;*/
 }
 
 .button-text {
@@ -16,7 +16,9 @@
 
 .button-add {
     background-color:green;
-    width:100%
+    position:absolute;
+    left:0px;
+    bottom:0px;
 }
 
 .button-red {
@@ -27,8 +29,17 @@
     background-color:yellow;
 }
 
+.button-green {
+    background-color:green;
+}
+
 .button-blue {
     background-color:blue;
+}
+
+
+.header-bg {
+    background-color:#eee;
 }
 
 /*
@@ -41,6 +52,26 @@
     display: table;
 }
 
-div.scrollable {
+.zahlung {
+    font-family:monospace;
+    text-align:right;
+}
+
+
+.scrollable {
+    overflow-x:hidden;
     overflow-y:auto;
+    height:70%;
+    empty-cells:show;
+}
+
+.scrollable thead th {
+    position:sticky;
+    top:0;
+    background-color:#eee;
+}
+
+.scrollable table {
+    border-collapse:collapse;
+    width:100%;
 }
