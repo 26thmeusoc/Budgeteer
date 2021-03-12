@@ -56,10 +56,12 @@
     <title>Budgeteer</title>
 </head>
 <body>
-
+    <div class="clearfix">
+        <a href="./add.php"><div class="button button-add button-text">New Receipt</div> </a>
+    </div>
     <div id='saldo'>
         <h3>Saldo</h3>
-        <table>
+        <table id="saldo">
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
             </thead>
@@ -106,9 +108,6 @@
             ?>
             </tbody>
         </table>
-    </div>
-    <div class="clearfix">
-        <div class="button button-add button-text">New Receipt</div> 
     </div>
 </body>
 </html>

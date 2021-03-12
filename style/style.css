@@ -1,3 +1,7 @@
+html body {
+height: 100%;
+}
+
 /*
  */
 .button {
@@ -16,7 +20,7 @@
 
 .button-add {
     background-color:green;
-    position:absolute;
+    position:fixed;
     left:0px;
     bottom:0px;
 }
@@ -62,21 +66,26 @@
     border-top:1px solid #000000;
 }
 
-.scrollable {
+.scrollable{
     overflow-x:hidden;
     overflow-y:auto;
-    height:70%;
-    empty-cells:show;
+    height:60vh;
 }
 
-.scrollable thead th {
+.scrollable thead {
     position:sticky;
     top:0;
+    height:25px;
     background-color:#eee;
     text-align:left;
 }
 
+
 .scrollable table {
     border-collapse:collapse;
-    width:100%;
+    width:100%; 
+    table-layout:fixed;
+}
+
+.scrollable tbody {
 }
