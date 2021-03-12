@@ -57,6 +57,10 @@
     text-align:right;
 }
 
+.summe {
+    font-weight:bold;
+    border-top:1px solid #000000;
+}
 
 .scrollable {
     overflow-x:hidden;
@@ -69,6 +73,7 @@
     position:sticky;
     top:0;
     background-color:#eee;
+    text-align:left;
 }
 
 .scrollable table {

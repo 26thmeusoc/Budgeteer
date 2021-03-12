@@ -22,11 +22,7 @@
             $users[$row["id"]] = $row["username"];
             // Create an array of uids
             array_push($uids,$row["id"]);
-<<<<<<< HEAD
-            // Create an array of sums they pai in this focus.
-=======
-            // Create an array of sums they have paid in this focus.
->>>>>>> database
+            // Create an array of sums they paid in this focus.
             $sums[$row["id"]] = 0;
         }
     } else {
@@ -60,34 +56,36 @@
     <title>Budgeteer</title>
 </head>
 <body>
+
     <div id='saldo'>
         <h3>Saldo</h3>
         <table>
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
-                <?php
+            </thead>
+            <tbody>
+            <?php
                 // Get all payments in this focus
                 $query = "SELECT * FROM purchase";
                 $purchases = $db->query($query);
+                $fullsum = (float)0.00;
                 if ($purchases != FALSE) {
                     // Sum, what everyone has paids
                     while ($row = $purchases->fetchArray()) {
                         $sums[$row["uid"]] = $sums[$row["uid"]]+$row["sum"];
+                        $fullsum = $fullsum+((float)$row["sum"]);
                     }
                 }
                 
                 // Print the results, do it for every uid found
                 for ($i = 0;$i<count($uids);$i++) {
-<<<<<<< HEAD
-                    echo "<tr><td>".$users[$uids[$i]]."</td><td>".$sums[$uids[$i]]."</td></tr>";
-=======
-                    echo "<tr><td>".$users[$uids[$i]]."</td><td class='zahlung'>".$sums[$uids[$i]]." € </td></tr>";
->>>>>>> database
+                    echo "<tr><td>".$users[$uids[$i]]."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
                 }
                 ?>
-            </thead>
-            <?php
-            ?>
+                <tr><td></td><td class="summe zahlung zahl"><?php
+                echo number_format((float)$fullsum,2,',','.')
+                ?> €</td></tr>
+            </tbody>
         </table>
     </div>
     <!-- List of purchases -->
@@ -102,7 +100,7 @@
                     // For every purchase found
                     while ($row = $purchases -> fetchArray()) {
                         // Write a row in this Database
-                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".$row["sum"]." €</td></tr>";
+                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
                     }
                 }
             ?>
