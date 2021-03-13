@@ -77,7 +77,7 @@
                 $fullsum = (float)0.00;
                 $results = $result->fetchAll();
                 foreach ($results as $row) {
-                    $sums[$row["uid"]] = $sums[$row["uid"]]+(int)$row["sum"];
+                    $sums[$row["uid"]] = $sums[$row["uid"]]+(float)$row["sum"];
                     $fullsum = $fullsum+((float)$row["sum"]);
                 }
                 // Print the results, do it for every uid found
