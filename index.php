@@ -9,25 +9,25 @@
      * Get a list of all Users in this Database.
      ***/
     // Prepare the query.
-    $query = "SELECT * FROM users";
-    $result = $db->query($query);
+    try {
+        $query = "SELECT * FROM users";
+        $result = $db->query($query);
+    } catch (PDOException $e) {
+        echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
+    }
     // Create arrays
     $users = array();
     $sums = array();
     $uids = array();
-    if ($result != FALSE) {
-        // Get a list of all usernames and uids.
-        while ($row = $result->fetchArray()) {
-            // Create an array, so we can easily map uid->username
-            $users[$row["id"]] = $row["username"];
-            // Create an array of uids
-            array_push($uids,$row["id"]);
-            // Create an array of sums they paid in this focus.
-            $sums[$row["id"]] = 0;
-        }
-    } else {
-        // Something went wrong
-        echo "Could not load Userlist";
+    // Get a list of all usernames and uids.
+    $results = $result->fetchAll();
+    foreach ($results as $row) {
+        // Create an array, so we can easily map uid->username
+        $users[$row["id"]] = $row["username"];
+        // Create an array of uids
+        array_push($uids,$row["id"]);
+        // Create an array of sums they paid in this focus.
+        $sums[$row["id"]] = 0;
     }
 ?>
 <!--
@@ -69,16 +69,17 @@
             <?php
                 // Get all payments in this focus
                 $query = "SELECT * FROM purchase";
-                $purchases = $db->query($query);
-                $fullsum = (float)0.00;
-                if ($purchases != FALSE) {
-                    // Sum, what everyone has paids
-                    while ($row = $purchases->fetchArray()) {
-                        $sums[$row["uid"]] = $sums[$row["uid"]]+$row["sum"];
-                        $fullsum = $fullsum+((float)$row["sum"]);
-                    }
+                try {
+                    $result = $db->query($query);
+                } catch (PDOException $e) {
+                    echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
                 }
-                
+                $fullsum = (float)0.00;
+                $results = $result->fetchAll();
+                foreach ($results as $row) {
+                    $sums[$row["uid"]] = $sums[$row["uid"]]+(int)$row["sum"];
+                    $fullsum = $fullsum+((float)$row["sum"]);
+                }
                 // Print the results, do it for every uid found
                 for ($i = 0;$i<count($uids);$i++) {
                     echo "<tr><td>".$users[$uids[$i]]."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
@@ -97,14 +98,11 @@
             <tbody>
             <?php
             // Prepare the list of all purchases
-                if ($purchases != FALSE) {
-                    $purchases->reset();
-                    // For every purchase found
-                    while ($row = $purchases -> fetchArray()) {
-                        // Write a row in this Database
-                        echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
-                    }
-                }
+            // For every purchase found
+            foreach($results as $row) {
+                // Write a row in this Database
+                echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
+            }
             ?>
             </tbody>
         </table>

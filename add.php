@@ -6,10 +6,10 @@
     if ($_GET["set"] == 1) {
         // Prepare the query
         $query = "INSERT INTO purchase (uid,sum,title,buydate) VALUES('".$_POST["user"]."','".$_POST["cost"]."','".$_POST["title"]."','".$_POST["pdate"]."')";
-        $result = $db->query($query); // Execute it
-        if ($result == FALSE) { // Was there an error?
-            // Yes, show errormessage.
-            echo "Could not add.<br>Error ".$db->lastErrorCode()."! Last Message was:<br/>".$db->lastErrorMsg()."<br/> Call was: ".$query;
+        try {
+            $result = $db->exec($query); // Execute it
+        } catch (PDOException $e) {
+            echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
         }
     }
     
@@ -33,12 +33,15 @@
         <?php
         // Create a list of all users
         $query = "SELECT * FROM users";
-        $result = $db->query($query);
+        try {
+            $results = $db->query($query);
+        } catch (PDOException $e) {
+            echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
+        }
         // Everything worked?
-        if ($result != FALSE) { // Yes, create a list of all users and use their name in this select Dialog
-            while ($row = $result->fetchArray()) {
-                echo "<option value='".$row["id"]."'>".$row["username"]."</option>";
-            }
+        $result = $results->fetchAll();
+        foreach ($result as $row) {
+            echo "<option value='".$row["id"]."'>".$row["username"]."</option>";
         }
         ?>
     </select>

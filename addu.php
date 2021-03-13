@@ -1,16 +1,15 @@
 <?php
     include("data/access.php");
-    $db = openDB('data/budgeteer.sqlite3');
+    $db = new PDO("sqlite:".'data/budgeteer.sqlite3');
     
     // Dirty hack ahead! Should not be done, cause this will add empty entries to our DB!
     if ($_GET["set"] == 1) {
         // Prepare the query
         $query = "INSERT INTO users (username) VALUES ('".$_POST["name"]."')";
-        $result = $db->query($query);
-        
-        // Was there an error?
-        if ($result == FALSE) { // Yes, so show an errormessage!
-            echo "Could not add.<br>Error ".$db->lastErrorCode()."! Last Message was:<br/>".$db->lastErrorMsg()."<br/> Call was: ".$query;
+        try {
+            $result = $db->exec($query);
+        } catch (PDOException $e) {
+            echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
         }
     }
     ?>
