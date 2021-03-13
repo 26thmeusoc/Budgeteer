@@ -3,9 +3,9 @@
     $db = new PDO("sqlite:".'data/budgeteer.sqlite3');
     
     // Dirty hack ahead! Should not be done, cause this will add empty entries to our DB!
-    if ($_GET["set"] == 1) {
+    if ($_GET["set"] == 1 && isset($_POST["name"])) {
         // Prepare the query
-        $query = "INSERT INTO users (username) VALUES ('".$_POST["name"]."')";
+        $query = "INSERT INTO users (username) VALUES ('".htmlentities($_POST["name"],ENT_QUOTES,'UTF-8')."')";
         try {
             $result = $db->exec($query);
         } catch (PDOException $e) {

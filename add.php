@@ -3,9 +3,9 @@
     $db = openDB('data/budgeteer.sqlite3');
     
     // Dirty hack ahead! Should not be done, cause this will add empty entries to our DB!
-    if ($_GET["set"] == 1) {
+    if ($_GET["set"] == 1 && isset($_POST["title"]) && $_POST['title']!="") {
         // Prepare the query
-        $query = "INSERT INTO purchase (uid,sum,title,buydate) VALUES('".$_POST["user"]."','".$_POST["cost"]."','".$_POST["title"]."','".$_POST["pdate"]."')";
+        $query = "INSERT INTO purchase (uid,sum,title,buydate) VALUES('".$_POST["user"]."','".$_POST["cost"]."','".htmlentities($_POST["title"],ENT_QUOTES,'UTF-8')."','".$_POST["pdate"]."')";
         try {
             $result = $db->exec($query); // Execute it
         } catch (PDOException $e) {

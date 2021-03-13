@@ -82,7 +82,7 @@
                 }
                 // Print the results, do it for every uid found
                 for ($i = 0;$i<count($uids);$i++) {
-                    echo "<tr><td>".$users[$uids[$i]]."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
+                    echo "<tr><td>".htmlentities($users[$uids[$i]],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
                 }
                 ?>
                 <tr><td></td><td class="summe zahlung zahl"><?php
@@ -101,7 +101,7 @@
             // For every purchase found
             foreach($results as $row) {
                 // Write a row in this Database
-                echo "<tr><td>".$row["title"]."</td><td>".$users[$row["uid"]]."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
+                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($users[$row["uid"]],ENT_QUOTES,'UTF-8')."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
             }
             ?>
             </tbody>
