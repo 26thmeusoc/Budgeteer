@@ -85,7 +85,7 @@
                     echo "<tr><td>".htmlentities($users[$uids[$i]],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
                 }
                 ?>
-                <tr><td></td><td class="summe zahlung zahl"><?php
+                <tr><td></td><td class="summe zahlung zahl" style="position:sticky"><?php
                 echo number_format((float)$fullsum,2,',','.')
                 ?> €</td></tr>
             </tbody>
@@ -101,7 +101,7 @@
             // For every purchase found
             foreach($results as $row) {
                 // Write a row in this Database
-                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($users[$row["uid"]],ENT_QUOTES,'UTF-8')."</td><td>".$row["buydate"]."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
+                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($users[$row["uid"]],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
             }
             ?>
             </tbody>
