@@ -6,7 +6,7 @@
     $result = createTables($db);
 ?>
 <!--
-    Copyright (C) 2022  Dirk Braun  This program is free 
+    Copyright (C) 2021  Dirk Braun  This program is free 
     software; you can redistribute it and/or modify it under the terms 
     of the GNU General Public License as published by the Free Software 
     Foundation; either version 2 of the License, or (at your option) 
@@ -43,7 +43,7 @@
             <tbody>
             <?php
                 // Get all payments in this focus
-                $query = "SELECT username, summe FROM users a LEFT JOIN (SELECT purchase.uid, SUM(purchase.sum) as summe FROM purchase GROUP BY purchase.uid) b ON a.id = b.uid";
+                $query = 'SELECT username, summe FROM users a LEFT JOIN (SELECT purchase.uid, SUM(purchase.sum) as summe FROM purchase WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) GROUP BY purchase.uid) b ON a.id = b.uid ';
                 try {
                     $result = $db->query($query);
                 } catch (PDOException $e) {
@@ -68,7 +68,7 @@
             <thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead>
             <tbody>
             <?php
-            $query = "SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid";
+            $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now"))';
                 try {
                     $result = $db->query($query);
                 } catch (PDOException $e) {
