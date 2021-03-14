@@ -36,6 +36,7 @@
     </div>
     <div id='saldo'>
         <h3>Saldo</h3>
+        <div class="menubox">
         <table id="saldo">
             <thead>
                 <th>Wer?</th><th>Wie viel?</th>
@@ -61,6 +62,8 @@
                 ?> €</td></tr>
             </tbody>
         </table>
+        <a href="filter.php"><div class="filterbutton">Filter</div></a>
+        </div>
     </div>
     <!-- List of purchases -->
     <div id='zahlungen' class='scrollable'>
@@ -68,7 +71,7 @@
             <thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead>
             <tbody>
             <?php
-            $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now"))';
+            $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) ORDER BY purchase.buydate DESC';
                 try {
                     $result = $db->query($query);
                 } catch (PDOException $e) {

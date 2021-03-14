@@ -93,3 +93,60 @@ height: 100%;
 .scrollable table tbody tr:nth-child(even) {
     background-color:#cde;
 }
+
+.menubox {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.filterbutton {
+        display: table-cell;
+        padding: 10px;
+        background-color:blue;
+        color:white;
+        vertical-align: middle;
+        height:100%;
+        border-radius:10px;
+}
+
+#filterbox {
+    border: 2px dashed;
+}
+
+#monthselector {
+    /*visibility:visible;*/
+}
+
+#yearselector {
+    /*visibility:visible;*/
+}
+
+#filterselector {
+    display:flex;
+    justify-content:center;
+}
+
+.filter {
+    width:10%;
+    margin-left:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    text-align:center;
+}
+
+.filtersel {
+    background-color:#7C7C7C;
+}
+
+.filterunsel {
+    background-color:#BFBFBF;
+}
+
+.visible {
+    visibility:visible;
+}
+
+.hidden {
+    visibility:hidden;
+}
