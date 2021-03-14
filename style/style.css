@@ -8,7 +8,7 @@ height: 100%;
     color:white;
     text-align:center;
     vertical-align:middle;
-    height:50px;
+    height:45px;
     width:100%;
     float:left;
     /*margin:10px;*/
@@ -88,4 +88,8 @@ height: 100%;
 }
 
 .scrollable tbody {
+}
+
+.scrollable table tbody tr:nth-child(even) {
+    background-color:#cde;
 }
