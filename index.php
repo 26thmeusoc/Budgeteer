@@ -4,31 +4,6 @@
     $db = openDB('data/budgeteer.sqlite3');
     // Just in case, the database is empty, create the needed tables.
     $result = createTables($db);
-    
-    /***
-     * Get a list of all Users in this Database.
-     ***/
-    // Prepare the query.
-    try {
-        $query = "SELECT * FROM users";
-        $result = $db->query($query);
-    } catch (PDOException $e) {
-        echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
-    }
-    // Create arrays
-    $users = array();
-    $sums = array();
-    $uids = array();
-    // Get a list of all usernames and uids.
-    $results = $result->fetchAll();
-    foreach ($results as $row) {
-        // Create an array, so we can easily map uid->username
-        $users[$row["id"]] = $row["username"];
-        // Create an array of uids
-        array_push($uids,$row["id"]);
-        // Create an array of sums they paid in this focus.
-        $sums[$row["id"]] = 0;
-    }
 ?>
 <!--
     Copyright (C) 2022  Dirk Braun  This program is free 
@@ -68,7 +43,7 @@
             <tbody>
             <?php
                 // Get all payments in this focus
-                $query = "SELECT * FROM purchase";
+                $query = "SELECT username, summe FROM users a LEFT JOIN (SELECT purchase.uid, SUM(purchase.sum) as summe FROM purchase GROUP BY purchase.uid) b ON a.id = b.uid";
                 try {
                     $result = $db->query($query);
                 } catch (PDOException $e) {
@@ -77,12 +52,8 @@
                 $fullsum = (float)0.00;
                 $results = $result->fetchAll();
                 foreach ($results as $row) {
-                    $sums[$row["uid"]] = $sums[$row["uid"]]+(float)$row["sum"];
-                    $fullsum = $fullsum+((float)$row["sum"]);
-                }
-                // Print the results, do it for every uid found
-                for ($i = 0;$i<count($uids);$i++) {
-                    echo "<tr><td>".htmlentities($users[$uids[$i]],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$sums[$uids[$i]],2,',','.')." € </td></tr>";
+                    $fullsum = $fullsum+((float)$row["summe"]);
+                    echo "<tr><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$row["summe"],2,',','.')." € </td></tr>";
                 }
                 ?>
                 <tr><td></td><td class="summe zahlung zahl" style="position:sticky"><?php
@@ -97,11 +68,18 @@
             <thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead>
             <tbody>
             <?php
+            $query = "SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid";
+                try {
+                    $result = $db->query($query);
+                } catch (PDOException $e) {
+                    echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
+                }
+            $results = $result->fetchAll();
             // Prepare the list of all purchases
             // For every purchase found
             foreach($results as $row) {
                 // Write a row in this Database
-                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($users[$row["uid"]],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["sum"],2,',','.')." €</td></tr>";
+                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
             }
             ?>
             </tbody>
