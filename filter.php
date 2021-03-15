@@ -100,6 +100,41 @@
                 <input type="submit" value="Submit">
         </div>
     </div>
+            <?php
+            if (isset($_GET["mode"])) {
+                echo '<table id="saldo"><thead><th>Who?</th><th>How much?</th></thead><tbody>';
+                $condition = "";
+                if ($_GET["mode"] == "month") {
+                    $condition = 'strftime("%m-%Y",purchase.buydate) = "'.$_POST["name"].'"';
+                } elseif ($_GET["mode"] == "year") {
+                    $condition = 'strftime("%Y",purchase.buydate) = "'.$_POST["name"].'"';
+                }
+                // Get all payments in this focus. Sum them automatically and connect uid to username.
+                // Default filter is "this month".
+                $query = 'SELECT username, summe FROM users a LEFT JOIN (SELECT purchase.uid, SUM(purchase.sum) as summe FROM purchase WHERE '.$condition.' GROUP BY purchase.uid) b ON a.id = b.uid ';
+                try { // Try to execute this
+                    $result = $db->query($query);
+                } catch (PDOException $e) { // Did it work?
+                    // No, print an errormessage
+                    echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
+                }
+                // Create an empty fullsum Value, so we can see, how much was payid
+                $fullsum = (float)0.00;
+                // Get all found rows
+                $results = $result->fetchAll();
+                foreach ($results as $row) { // For each row
+                    // Add paid sum to fullsum
+                    $fullsum = $fullsum+((float)$row["summe"]);
+                    // Add a new row in the table for this user
+                    echo "<tr><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$row["summe"],2,',','.')." € </td></tr>";
+                }
+            }?>
+                <!-- All Users are shown, now show complete total -->
+                <tr><td></td><td class="summe zahlung zahl" style="position:sticky"><?php
+                echo number_format((float)$fullsum,2,',','.')
+                ?> €</td></tr>
+            </tbody>
+        </table>
     <?php
         if (isset($_GET["mode"])) {
             echo "<div id='zahlungen' class='scrollable'><table><thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead><tbody>";
