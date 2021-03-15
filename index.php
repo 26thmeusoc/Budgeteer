@@ -33,7 +33,6 @@
 <body>
     <!-- Put this button at the buttom of the page so adding a new entry ist easier to reach -->
     <div class="clearfix">
-        <a href="./add.php"><div class="button button-add button-text">New Receipt</div> </a>
     </div>
     <div id='saldo'>
         <h3>Saldo</h3>
@@ -71,7 +70,10 @@
             </tbody>
         </table>
         <!-- Show a link to the filterpage -->
-        <a href="filter.php"><div class="filterbutton">Filter</div></a>
+        <div style="display:flex;justify-content:flex-end;">
+        <a href="filter.php" style="text-decoration:none"><div class="filterbutton">Filter</div></a>
+        <a href="./add.php" style='height:100%;margin-left:5px;text-decoration:none;'><div class="button-add">New Receipt</div> </a>
+        </div>
         </div>
     </div>
     <!-- List of purchases -->
