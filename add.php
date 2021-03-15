@@ -26,6 +26,11 @@
     <!-- Load the stylesheet for this document! -->
     <link rel="stylesheet" type="text/css" href="style/style.css" />
     <title>Budgeteer</title>
+    <?php
+        if ($_POST["return"] == true) {
+            echo '<script type="text/javascript">location.href="./index.php";</script>';
+        }
+    ?>
 </head>
 <body>
 <h1>Add a receipt</h1>
@@ -51,12 +56,14 @@
     </select>
     <!-- Ask the user for other Data needed -->
     <label for="pdate">Kaufdatum:</label>
-    <input type="date" id="pdate" name="pdate"><br>
+    <input type="date" language="de-de" id="pdate" name="pdate" value=<?php echo '"'.date("Y-m-d").'"';?>><br>
     <label for="title">Beschreibung:</label>
     <input type="text" name="title" id="title"><br>
     <label for="cost">Kosten:</label>
     <!-- Create a Currency Inputfield -->
-    <input type="number" step="0.01" id="cost" name="cost">
+    <input type="number" step="0.01" id="cost" name="cost"><br>
+    <label for="return">Return to overview after adding:</label>
+    <input type="checkbox" id="return" name="return">Return afterwards</input><br>
     <input type="submit" value="Submit">
 </form>
 </body>
