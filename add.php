@@ -16,6 +16,18 @@
 ?>
 
 <!-- Display the standard Interface -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- What's in this file? -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <!-- Resposive Webdesign Info ahead! -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load the stylesheet for this document! -->
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <title>Budgeteer</title>
+</head>
+<body>
 <h1>Add a receipt</h1>
 <form action="./add.php?set=1" method="post" lang="de">
     <label for="user">Buyer:</label>
@@ -47,3 +59,5 @@
     <input type="number" step="0.01" id="cost" name="cost">
     <input type="submit" value="Submit">
 </form>
+</body>
+</html>
