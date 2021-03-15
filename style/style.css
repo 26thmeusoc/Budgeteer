@@ -82,7 +82,7 @@ height: 100%;
 .scrollable{
     overflow-x:hidden;
     overflow-y:auto;
-    height:60vh;
+    height:72vh;
 }
 
 .scrollable thead {
