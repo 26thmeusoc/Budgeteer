@@ -8,21 +8,11 @@
         $query = "INSERT INTO purchase (uid,sum,title,buydate) VALUES('".$_POST["user"]."','".$_POST["cost"]."','".htmlentities($_POST["title"],ENT_QUOTES,'UTF-8')."','".$_POST["pdate"]."')";
         try {
             $result = $db->exec($query); // Execute it
-        } catch (PDOException $e) {
+        } catch (PDOException $e) { // Did it work?
+            // No, print an error Message
             echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
         }
     }
-    
-    // Remove this.
-    /*function getListOfUsers($db) {
-        $query = "SELECT username FROM users";
-        $result = $db->query($query);
-        if ($result == FALSE) {
-            echo "Error ".$db->lastErrorCode()."! Last Message was:<br/>".$db->lastErrorMsg()."<br/> Call was: ".$query;
-            return 1;
-        }
-        return $result;
-    }*/
 ?>
 
 <!-- Display the standard Interface -->
@@ -33,14 +23,16 @@
         <?php
         // Create a list of all users
         $query = "SELECT * FROM users";
-        try {
+        try { // Try to execute this
             $results = $db->query($query);
-        } catch (PDOException $e) {
+        } catch (PDOException $e) { // Did it work?
+            // No, print an errormessage
             echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
         }
-        // Everything worked?
+        // Select all results
         $result = $results->fetchAll();
-        foreach ($result as $row) {
+        foreach ($result as $row) { // For each row
+            // Add an option-Tag for this user. Use uid as value
             echo "<option value='".$row["id"]."'>".$row["username"]."</option>";
         }
         ?>

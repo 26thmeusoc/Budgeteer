@@ -31,6 +31,7 @@
     <title>Budgeteer</title>
 </head>
 <body>
+    <!-- Put this button at the buttom of the page so adding a new entry ist easier to reach -->
     <div class="clearfix">
         <a href="./add.php"><div class="button button-add button-text">New Receipt</div> </a>
     </div>
@@ -39,49 +40,61 @@
         <div class="menubox">
         <table id="saldo">
             <thead>
-                <th>Wer?</th><th>Wie viel?</th>
+                <th>Who?</th><th>How much?</th>
             </thead>
             <tbody>
             <?php
-                // Get all payments in this focus
+                // Get all payments in this focus. Sum them automatically and connect uid to username.
+                // Default filter is "this month".
                 $query = 'SELECT username, summe FROM users a LEFT JOIN (SELECT purchase.uid, SUM(purchase.sum) as summe FROM purchase WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) GROUP BY purchase.uid) b ON a.id = b.uid ';
-                try {
+                try { // Try to execute this
                     $result = $db->query($query);
-                } catch (PDOException $e) {
+                } catch (PDOException $e) { // Did it work?
+                    // No, print an errormessage
                     echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
                 }
+                // Create an empty fullsum Value, so we can see, how much was payid
                 $fullsum = (float)0.00;
+                // Get all found rows
                 $results = $result->fetchAll();
-                foreach ($results as $row) {
+                foreach ($results as $row) { // For each row
+                    // Add paid sum to fullsum
                     $fullsum = $fullsum+((float)$row["summe"]);
+                    // Add a new row in the table for this user
                     echo "<tr><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td class='zahlung'>".number_format((float)$row["summe"],2,',','.')." € </td></tr>";
                 }
                 ?>
+                <!-- All Users are shown, now show complete total -->
                 <tr><td></td><td class="summe zahlung zahl" style="position:sticky"><?php
                 echo number_format((float)$fullsum,2,',','.')
                 ?> €</td></tr>
             </tbody>
         </table>
+        <!-- Show a link to the filterpage -->
         <a href="filter.php"><div class="filterbutton">Filter</div></a>
         </div>
     </div>
     <!-- List of purchases -->
     <div id='zahlungen' class='scrollable'>
+        <!-- Display the detailed table -->
         <table>
-            <thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead>
+            <!-- Add headers to the table -->
+            <thead><tr><th>Description</th><th>Buyer</th><th>Date</th><th>Amount</th></tr></thead>
             <tbody>
             <?php
+            // Select all required Information for this Table, default filter is: "this month", descending dates
             $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) ORDER BY purchase.buydate DESC';
-                try {
-                    $result = $db->query($query);
-                } catch (PDOException $e) {
-                    echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
-                }
+            try { // Try to execute this
+                $result = $db->query($query);
+            } catch (PDOException $e) { // Did it work?
+                // No, print an errormessage
+                echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
+            }
             $results = $result->fetchAll();
             // Prepare the list of all purchases
             // For every purchase found
             foreach($results as $row) {
-                // Write a row in this Database
+                // Write a row in this Table
                 echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
             }
             ?>

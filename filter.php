@@ -1,7 +1,6 @@
 <?php
     include("data/access.php");
     $db =  openDB('data/budgeteer.sqlite3');
-    echo "Got: ".$_POST["name"];
 ?>
 
 <!DOCTYPE HTML>
@@ -14,6 +13,7 @@
     <!-- Load the stylesheet for this document! -->
     <link rel="stylesheet" type="text/css" href="style/style.css" />
     <script>
+        // TODO: Implement an easier way to change the filter
         function changeFilter(newFilter) {
             var elements = document.getElementsByClassName("filter");
             var i;
@@ -47,6 +47,7 @@
 </head>
 <body>
     <div id="filterbox">
+        <!-- Add a menu -->
         <div id="filterselector">
             <div id="filterM" class="filter filtersel" onclick='changeFilter("m")'>
                 by Month
@@ -59,15 +60,19 @@
             <form action="./filter.php?mode=month" method="post">
                 <select id="name" name="name">
                     <?php
+                        // Prepare the query, which months are available anyway?
                         $query = 'SELECT DISTINCT strftime("%m-%Y",purchase.buydate) as monthyear FROM purchase ORDER BY purchase.buydate DESC';
-                        try {
+                        try { // Try to execute this
                             $results = $db->query($query);
-                        } catch (PDOException $e) {
+                        } catch (PDOException $e) { // Did it work?
+                            // No, print an error Message
                             echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
                         }
+                        // Get all results
                         $result=$results->fetchAll();
-                        
-                        foreach ($result as $row) {
+                        // Add for each found month an option
+                        foreach ($result as $row) { // For each found month-year-combination
+                            // Add an entry to the selector
                             echo "<option value='".$row["monthyear"]."'>".$row["monthyear"]."</option>";
                         }
                     ?>

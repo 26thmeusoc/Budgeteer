@@ -6,9 +6,10 @@
     if ($_GET["set"] == 1 && isset($_POST["name"])) {
         // Prepare the query
         $query = "INSERT INTO users (username) VALUES ('".htmlentities($_POST["name"],ENT_QUOTES,'UTF-8')."')";
-        try {
+        try { // Try to execute
             $result = $db->exec($query);
-        } catch (PDOException $e) {
+        } catch (PDOException $e) { // Did it work?
+            // No, print an error Message
             echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
         }
     }
