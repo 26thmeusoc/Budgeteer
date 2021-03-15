@@ -19,10 +19,23 @@ height: 100%;
 }
 
 .button-add {
+    display:table-cell;
+    padding:10px;
     background-color:green;
-    position:fixed;
-    left:0px;
-    bottom:0px;
+    color:white;
+    vertical-align:middle;
+    height:100%;
+    border-radius:10px;
+}
+
+.filterbutton {
+    display: table-cell;
+    padding: 10px;
+    background-color:blue;
+    color:white;
+    vertical-align: middle;
+    height:100%;
+    border-radius:10px;
 }
 
 .button-red {
@@ -98,16 +111,6 @@ height: 100%;
     display:flex;
     flex-direction:row;
     justify-content:space-between;
-}
-
-.filterbutton {
-        display: table-cell;
-        padding: 10px;
-        background-color:blue;
-        color:white;
-        vertical-align: middle;
-        height:100%;
-        border-radius:10px;
 }
 
 #filterbox {
