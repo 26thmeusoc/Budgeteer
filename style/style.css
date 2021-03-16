@@ -172,6 +172,16 @@ height: 100%;
     border-radius:5px;
 }
 
+.removebutton {
+    background-color:red;
+    width: 75px;
+    margin-left:5px;
+    text-align:center;
+    color:black;
+    text-decoration:none;
+    border-radius:5px;
+}
+
 .commentbox {
     border-bottom:2px dotted;
 }
