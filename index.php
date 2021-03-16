@@ -29,6 +29,18 @@
     <!-- Load the stylesheet for this document! -->
     <link rel="stylesheet" type="text/css" href="style/style.css" />
     <title>Budgeteer</title>
+    <script>
+        function expand(id,background) {
+            var xhttpr = new XMLHttpRequest();
+            xhttpr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("trow".concat(id)).insertAdjacentHTML("afterend",this.responseText);
+                }
+            };
+            xhttpr.open("GET", "expand.php?id=".concat(id), true);
+            xhttpr.send();
+        }
+    </script>
 </head>
 <body>
     <!-- Put this button at the buttom of the page so adding a new entry ist easier to reach -->
@@ -85,7 +97,7 @@
             <tbody>
             <?php
             // Select all required Information for this Table, default filter is: "this month", descending dates
-            $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) ORDER BY purchase.buydate DESC';
+            $query = 'SELECT purchase.id, purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m%Y",purchase.buydate) = strftime("%m%Y",DATE("now")) ORDER BY purchase.buydate DESC';
             try { // Try to execute this
                 $result = $db->query($query);
             } catch (PDOException $e) { // Did it work?
@@ -99,10 +111,11 @@
             foreach($results as $row) {
                 if ($counter%2 == 0) {
                     // Write a row in this Table
-                    echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
+                    echo "<tr id='trow".$row["id"]."' onclick='expand(".$row["id"].",false);'><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
                 } else {
-                    echo "<tr class='alternateBackground'><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
+                    echo "<tr id='trow".$row["id"]."' onclick='expand(".$row["id"].",true);' class='alternateBackground'><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
                 }
+                $counter++;
             }
             ?>
             </tbody>
