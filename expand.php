@@ -9,7 +9,7 @@
         echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$query;
     }
     $row = $result->fetch();
-    echo "<tr><td colspan=3>";
+    echo "<tr id='commentbox".$_GET["id"]."' class='commentbox'><td colspan=3 class='commenttext'>";
     echo $row['comment'];
     echo "</td><td><a href='./edit.php?id=".$_GET["id"]."'><div class='editbutton'>Edit</div></a></td></tr>";
 ?>

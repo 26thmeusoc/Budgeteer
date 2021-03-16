@@ -31,14 +31,16 @@
     <title>Budgeteer</title>
     <script>
         function expand(id,background) {
-            var xhttpr = new XMLHttpRequest();
-            xhttpr.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("trow".concat(id)).insertAdjacentHTML("afterend",this.responseText);
+            if (document.getElementById("commentbox".concat(id)) == null) {
+                var xhttpr = new XMLHttpRequest();
+                xhttpr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("trow".concat(id)).insertAdjacentHTML("afterend",this.responseText);
+                    }
                 }
-            };
-            xhttpr.open("GET", "expand.php?id=".concat(id), true);
-            xhttpr.send();
+                xhttpr.open("GET", "expand.php?id=".concat(id), true);
+                xhttpr.send();
+            }
         }
     </script>
 </head>
