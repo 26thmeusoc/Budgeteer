@@ -42,6 +42,19 @@
                 document.getElementById("monthselector").classList.remove("visible");
             }
         }
+        
+        function expand(id,background) {
+            if (document.getElementById("commentbox".concat(id)) == null) {
+                var xhttpr = new XMLHttpRequest();
+                xhttpr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("trow".concat(id)).insertAdjacentHTML("afterend",this.responseText);
+                    }
+                }
+                xhttpr.open("GET", "expand.php?id=".concat(id), true);
+                xhttpr.send();
+            }
+        }
     </script>
     <title>Budgeteer</title>
 </head>
@@ -139,9 +152,9 @@
         if (isset($_GET["mode"])) {
             echo "<div id='zahlungen' class='scrollable'><table><thead><tr><th>Was?</th><th>Wer?</th><th>Wann?</th><th>Wie viel?</th></tr></thead><tbody>";
             if ($_GET["mode"] == "month") {
-                $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m-%Y",purchase.buydate) = "'.$_POST["name"].'" ORDER BY purchase.buydate DESC';
+                $query = 'SELECT purchase.id, purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%m-%Y",purchase.buydate) = "'.$_POST["name"].'" ORDER BY purchase.buydate DESC';
             } elseif ($_GET["mode"] == "year") {
-                $query = 'SELECT purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%Y",purchase.buydate) = "'.$_POST["name"].'" ORDER BY purchase.buydate DESC';
+                $query = 'SELECT purchase.id, purchase.title, users.username, sum as zahlung, purchase.buydate FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE strftime("%Y",purchase.buydate) = "'.$_POST["name"].'" ORDER BY purchase.buydate DESC';
             }
             
             try {
@@ -150,11 +163,17 @@
                 echo "Error ".$e->getCode()."! Last Message was:<br/>".$e->getMessage()."<br/> Call was: ".$call;
             }
             $results = $result->fetchAll();
+            $counter = 0;
             // Prepare the list of all purchases
             // For every purchase found
             foreach($results as $row) {
-                // Write a row in this Database
-                echo "<tr><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
+                if ($counter%2 == 0) {
+                    // Write a row in this Table
+                    echo "<tr id='trow".$row["id"]."' onclick='expand(".$row["id"].",false);'><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
+                } else {
+                    echo "<tr id='trow".$row["id"]."' onclick='expand(".$row["id"].",true);' class='alternateBackground'><td>".htmlentities($row["title"],ENT_QUOTES,'UTF-8')."</td><td>".htmlentities($row["username"],ENT_QUOTES,'UTF-8')."</td><td>".date("d.m.y",strtotime($row["buydate"]))."</td><td class='zahlung'>".number_format((float)$row["zahlung"],2,',','.')." €</td></tr>";
+                }
+                $counter++;
             }
             echo "</tbody></table>";
         }
