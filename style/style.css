@@ -157,3 +157,21 @@ height: 100%;
 .hidden {
     visibility:hidden;
 }
+
+.commenttext {
+    font-style:italic;
+    padding-left:15px;
+}
+
+.editbutton {
+    background-color:orange;
+    width: 50px;
+    text-align:center;
+    color:black;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.commentbox {
+    border-bottom:2px dotted;
+}
