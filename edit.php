@@ -29,9 +29,9 @@ if (!isset($_GET["set"])) {
     <link rel="stylesheet" type="text/css" href="style/style.css" />
     <title>Budgeteer</title>
     <?php
-        /*if (isset($_GET["set"])) {
+        if (isset($_GET["set"])) {
             echo '<script type="text/javascript">location.href="./index.php";</script>';
-        }*/
+        }
     ?>
 </head>
 <body>
