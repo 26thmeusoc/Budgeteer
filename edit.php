@@ -4,9 +4,9 @@ include("data/access.php");
 $db = openDB('data/budgeteer.sqlite3');
 
 if (!isset($_GET["set"])) {
-    $query = 'SELECT buydate, title, uid, sum FROM purchase WHERE id='.$_GET['id'];
+    $query = 'SELECT buydate, title, uid, sum, comment FROM purchase WHERE id='.$_GET['id'];
 } else {
-    $query = "UPDATE purchase SET buydate='".$_POST['pdate']."', title='".$_POST['title']."', uid=".$_POST['user'].", sum=".$_POST['cost']." WHERE id=".$_GET["id"];
+    $query = "UPDATE purchase SET buydate='".$_POST['pdate']."', title='".$_POST['title']."', uid=".$_POST['user'].", sum=".$_POST['cost'].", comment='".$_POST['comment']."' WHERE id=".$_GET["id"];
 }
 
 try {
@@ -68,6 +68,8 @@ if (!isset($_GET["set"])) {
     <label for="cost">Kosten:</label>
     <!-- Create a Currency Inputfield -->
     <input type="number" step="0.01" id="cost" name="cost" value=<?php echo "'".$row["sum"]."'";?>><br>
+    <label for="comment">Comment:</label>
+    <input type="text" id="comment" name="comment" value=<?php echo "'".$row["comment"]."'"; ?>><br>
     <input type="submit" value="Submit">
 </body>
 </head>
