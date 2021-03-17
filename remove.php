@@ -4,7 +4,7 @@
     $query = "";
     $row = "";
     if (!isset($_GET["del"])) {
-        $query = 'SELECT buydate, title, uid, sum, comment FROM purchase WHERE id='.$_GET['id'];
+        $query = 'SELECT buydate, title, sum, comment, users.username FROM purchase LEFT JOIN users ON users.id = purchase.uid WHERE purchase.id='.$_GET['id'];
     } else {
         if ($_GET["del"] == 1) {
         $query = "DELETE FROM purchase WHERE id=".$_GET['id'];
@@ -41,7 +41,7 @@ Are you sure you want to delete this entry?<br>
 <?php
 if (!isset($_GET["del"])) {
     $row = $results->fetch();
-    echo "<b>Title: </b>".$row["title"]."<br><b>Buyer: </b>".$row["uid"]."<br><b>Sum: </b>".$row["sum"]."<br><b>Comment: </b>".$row["comment"];
+    echo "<b>Title: </b>".$row["title"]."<br><b>Buyer: </b>".$row["username"]."<br><b>Sum: </b>".$row["sum"]."<br><b>Comment: </b>".$row["comment"];
     echo"<br><a href='./remove.php?del=1&id=".$_GET["id"]."'>Yes</a> <a href='./index.php'>No</a>";
 }
 ?>
