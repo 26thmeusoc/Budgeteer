@@ -1,4 +1,7 @@
 <?php
+    if (isset($_POST["user"])) {
+        setcookie("lastuid",$_POST["user"]);
+    }
     include("data/access.php");
     $db = openDB('data/budgeteer.sqlite3');
     
@@ -50,7 +53,17 @@
         $result = $results->fetchAll();
         foreach ($result as $row) { // For each row
             // Add an option-Tag for this user. Use uid as value
-            echo "<option value='".$row["id"]."'>".$row["username"]."</option>";
+            echo "<option value='".$row["id"]."'";
+            if (!isset($_POST["user"])) {
+                if ($row["id"] == $_COOKIE["lastuid"]) {
+                    echo "selected";
+                }
+            } else {
+                if ($row["id"] == $_POST["user"]) {
+                    echo "selected";
+                }
+            }
+            echo">".$row["username"]."</option>";
         }
         ?>
     </select>
